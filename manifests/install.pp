@@ -36,10 +36,16 @@ class savanna::install {
     }
   }
 
+  package { 'python-keystoneclient':
+    ensure   => '0.3.2',
+    provider => pip,
+    require  => Package['python-pip'],
+  }
+
   package { 'python-savannaclient':
     ensure   => '0.3.0',
     provider => pip,
-    require  => Package['python-pip'],
+    require  => [Package['python-pip', Package['python-keystoneclient']],
   }
 
   if $savanna::params::development {
@@ -50,13 +56,13 @@ class savanna::install {
       ensure   => installed,
       provider => pip,
       source   => $savanna::params::development_build_url,
-      require  => Package['python-pip'],
+      require  => [Package['python-pip'], Package['python-savannaclient']],
     }
   } else {
     package { 'savanna':
       ensure   => '0.3',
       provider => pip,
-      require  => Package['python-pip'],
+      require  => [Package['python-pip'], Package['python-savannaclient']],
     }
   }
 
