@@ -46,7 +46,7 @@ class savanna::dashboard (
     }
   } else {
     package { 'savanna-dashboard':
-      ensure   => installed,
+      ensure   => '0.3',
       provider => pip,
       require  => Package['python-pip'],
     }

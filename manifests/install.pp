@@ -36,6 +36,12 @@ class savanna::install {
     }
   }
 
+  package { 'python-savannaclient':
+    ensure   => '0.3.0',
+    provider => pip,
+    require  => Package['python-pip'],
+  }
+
   if $savanna::params::development {
     info("Installing and using the savanna development version. URL:
       ${savanna::params::development_build_url}")
@@ -48,7 +54,7 @@ class savanna::install {
     }
   } else {
     package { 'savanna':
-      ensure   => installed,
+      ensure   => '0.3',
       provider => pip,
       require  => Package['python-pip'],
     }
