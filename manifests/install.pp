@@ -46,11 +46,11 @@ class savanna::install {
   package { 'python-keystoneclient': ensure   => '0.3.2' }
   package { 'python-netaddr': ensure   => installed }
   package { 'python-pbr': ensure   => installed }
-  package { 'python-requests': ensure   => '1.1' }
+  package { 'python-requests': ensure   => '1.2.3' }
   package { 'python-six': ensure   => '1.1.0' }
 
   package { 'python-savannaclient':
-    ensure   => '0.3.0',
+    ensure   => installed,
     provider => dpkg,
     source   => 'puppet:///modules/savanna/python-savannaclient_0.3-1_all.deb',
     require  => [Package['python-keystoneclient'],
