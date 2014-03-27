@@ -36,16 +36,31 @@ class savanna::install {
     }
   }
 
-  package { 'python-keystoneclient':
-    ensure   => '0.3.2',
-    provider => pip,
-    require  => Package['python-pip'],
-  }
+  #package { 'python-keystoneclient':
+  #  ensure   => '0.3.2',
+  #  provider => pip,
+  #  require  => Package['python-pip'],
+  #}
+
+  package { 'python-babel': ensure   => '0.9.6' }
+  package { 'python-keystoneclient': ensure   => '0.3.2' }
+  package { 'python-netaddr': ensure   => installed }
+  package { 'python-pbr': ensure   => installed }
+  package { 'python-requests': ensure   => '1.1' }
+  package { 'python-six': ensure   => '1.1.0' }
 
   package { 'python-savannaclient':
     ensure   => '0.3.0',
-    provider => pip,
-    require  => [Package['python-pip', Package['python-keystoneclient']],
+    provider => dpkg,
+    source   => 'puppet:///modules/savanna/python-savannaclient_0.3-1_all.deb',
+    require  => [Package['python-keystoneclient'],
+                  Package['python-babel'],
+                  Package['python-keystoneclient'],
+                  Package['python-netaddr'],
+                  Package['python-pbr'],
+                  Package['python-requests'],
+                  Package['python-six']
+                ],
   }
 
   if $savanna::params::development {
