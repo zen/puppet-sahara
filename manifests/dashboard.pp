@@ -31,12 +31,12 @@ class savanna::dashboard (
     $neutron = 'False'
   }
 
-  if !defined(Package['python-pip']) {
-    package { 'python-pip': ensure => latest, }
-  }
-
   if $savanna::params::development {
     info('Installing the developement version of savanna dashboard')
+
+    if !defined(Package['python-pip']) {
+      package { 'python-pip': ensure => latest, }
+    }
 
     package { 'savanna-dashboard':
       ensure   => installed,
@@ -45,10 +45,9 @@ class savanna::dashboard (
       require  => Package['python-pip'],
     }
   } else {
-    package { 'savanna-dashboard':
+    package { 'python-savanna-dashboard':
       ensure   => '0.3',
-      provider => pip,
-      require  => Package['python-pip'],
+      require  => Package['openstack-dashboard'],
     }
   }
 

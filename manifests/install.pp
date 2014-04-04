@@ -18,54 +18,33 @@ class savanna::install {
 
   # this is here until this fix is released
   # https://bugs.launchpad.net/ubuntu/+source/python-pbr/+bug/1245676
-  if !defined(Package['git']) {
-    package { 'git': ensure => latest, }
-  }
 
-  if !defined(Package['python-pip']) {
-    package { 'python-pip':
-      ensure  => latest,
-      require => Package['git']
-    }
-  }
-
-  if !defined(Package['python-dev']) {
-    package { 'python-dev':
-      ensure  => latest,
-      require => Package['python-pip']
-    }
-  }
-
-  #package { 'python-keystoneclient':
-  #  ensure   => '0.3.2',
-  #  provider => pip,
-  #  require  => Package['python-pip'],
-  #}
-
-  package { 'python-babel': ensure   => '0.9.6' }
-  package { 'python-keystoneclient': ensure   => '0.3.2' }
-  package { 'python-netaddr': ensure   => installed }
-  package { 'python-pbr': ensure   => installed }
-  package { 'python-requests': ensure   => '1.2.3' }
-  package { 'python-six': ensure   => '1.1.0' }
 
   package { 'python-savannaclient':
-    ensure   => installed,
-    provider => dpkg,
-    source   => 'puppet:///modules/savanna/python-savannaclient_0.3-1_all.deb',
-    require  => [Package['python-keystoneclient'],
-                  Package['python-babel'],
-                  Package['python-keystoneclient'],
-                  Package['python-netaddr'],
-                  Package['python-pbr'],
-                  Package['python-requests'],
-                  Package['python-six']
-                ],
+    ensure   => '0.3',
   }
 
   if $savanna::params::development {
     info("Installing and using the savanna development version. URL:
       ${savanna::params::development_build_url}")
+
+      if !defined(Package['git']) {
+        package { 'git': ensure => latest, }
+      }
+
+      if !defined(Package['python-pip']) {
+        package { 'python-pip':
+          ensure  => latest,
+          require => Package['git']
+        }
+      }
+
+      if !defined(Package['python-dev']) {
+        package { 'python-dev':
+          ensure  => latest,
+          require => Package['python-pip']
+        }
+      }
 
     package { 'savanna':
       ensure   => installed,
@@ -74,11 +53,14 @@ class savanna::install {
       require  => [Package['python-pip'], Package['python-savannaclient']],
     }
   } else {
+    package { 'python-savanna':
+      ensure   => '0.3',
+    }
+
     package { 'savanna':
       ensure   => '0.3',
-      provider => pip,
-      require  => [Package['python-pip'], Package['python-savannaclient']],
     }
+
   }
 
   group { 'savanna':
