@@ -38,8 +38,9 @@ class savanna::dashboard (
       package { 'python-pip': ensure => latest, }
     }
 
-    package { 'savanna-dashboard':
+    package { 'python-savanna-dashboard':
       ensure   => installed,
+      name     => 'savanna-dashboard',
       provider => pip,
       source   => $savanna::params::development_dashboard_build_url,
       require  => Package['python-pip'],
@@ -55,7 +56,7 @@ class savanna::dashboard (
     command => "echo \"HORIZON_CONFIG['dashboards'] += ('savanna',)\" >> ${savanna::params::horizon_settings}",
     path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
     unless  => "grep \"HORIZON_CONFIG\['dashboards'\] +=\" ${savanna::params::horizon_settings}",
-    require => Package['savanna-dashboard'],
+    require => Package['python-savanna-dashboard'],
   }
 
   exec { 'savanna-installed-apps':
