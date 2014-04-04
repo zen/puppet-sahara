@@ -54,11 +54,11 @@ class savanna::install {
     }
   } else {
     package { 'python-savanna':
-      ensure   => '0.3',
+      ensure   => '0.3-1',
     }
 
     package { 'savanna':
-      ensure   => '0.3',
+      ensure   => '0.3-1',
     }
 
   }

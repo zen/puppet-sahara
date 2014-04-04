@@ -47,7 +47,7 @@ class savanna::dashboard (
     }
   } else {
     package { 'python-savanna-dashboard':
-      ensure   => '0.3',
+      ensure   => '0.3-1ppa1',
       require  => Package['openstack-dashboard'],
     }
   }
