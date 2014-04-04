@@ -62,20 +62,20 @@ class savanna::dashboard (
     command => "echo \"INSTALLED_APPS += ('savannadashboard',)\" >> ${savanna::params::horizon_settings}",
     path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
     unless  => "grep \"INSTALLED_APPS +=\" ${savanna::params::horizon_settings}",
-    require => Package['savanna-dashboard'],
+    require => Package['python-savanna-dashboard'],
   }
 
   exec { 'savanna-use-neutron':
     command => "echo 'SAVANNA_USE_NEUTRON = ${neutron}' >> ${savanna::params::horizon_local_settings}",
     path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
     unless  => "grep \"SAVANNA_USE_NEUTRON\" ${savanna::params::horizon_local_settings}",
-    require => Package['savanna-dashboard'],
+    require => Package['python-savanna-dashboard'],
   }
 
   exec { 'savanna-url':
     command => "echo \"SAVANNA_URL = 'http://${savanna_host}:${savanna_port}/v1.1'\" >> ${savanna::params::horizon_local_settings}",
     path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
     unless  => "grep \"SAVANNA_URL\" ${savanna::params::horizon_local_settings}",
-    require => Package['savanna-dashboard'],
+    require => Package['python-savanna-dashboard'],
   }
 }
