@@ -21,7 +21,7 @@ class savanna::install {
 
 
   package { 'python-savannaclient':
-    ensure   => '0.3-1ppa2',
+    ensure   => latest,
   }
 
   if $savanna::params::development {
@@ -54,11 +54,11 @@ class savanna::install {
     }
   } else {
     package { 'python-savanna':
-      ensure   => '0.3-1',
+      ensure   => latest,
     }
 
     package { 'savanna':
-      ensure   => '0.3-1',
+      ensure   => latest,
     }
 
   }
