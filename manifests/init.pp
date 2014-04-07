@@ -87,15 +87,20 @@ class savanna (
   $savanna_db_user        = 'savanna',
   $savanna_db_password    = 'savanna',
   # keystone
-  $keystone_auth_protocol = 'http',
-  $keystone_auth_host     = '127.0.0.1',
-  $keystone_auth_port     = '35357',
+  $keystone_host          = '127.0.0.1',
+  $keystone_port          = '35357',
+  $keystone_protocol      = 'http',
   $keystone_user          = 'savanna',
+  $keystone_tenant        = 'services',
   $keystone_password      = 'savanna',
-  $keystone_tenant        = undef,) {
+  $use_neutron            = false,
+  $use_floating_ips       = true,
+  $node_domain            = 'novalocal',
+  $plugins                = 'vanilla,hdp,idh',
+  $debug                  = false,
+  $verbose                = false,
+  {
   include savanna::params
-
-  # move keystone and db classes here?
 
   if !$keystone_tenant {
     $int_keystone_tenant = $keystone_user
@@ -103,7 +108,35 @@ class savanna (
     $int_keystone_tenant = $keystone_tenant
   }
 
+  if $use_neutron {
+    $use_neutron_value = true
+  } else {
+    $use_neutron_value = false
+  }
+
+  if $use_floating_ips {
+    $use_floating_ips_value = true
+  } else {
+    $use_floating_ips_value = false
+  }
+
   class { '::savanna::install':
   } ->
   class { '::savanna::service': }
+  
+  savanna_config {
+    'DEFAULT/os_admin_tenant_name'         : value => $keystone_tenant;
+    'DEFAULT/os_admin_username'            : value => $keystone_user;
+    'DEFAULT/os_admin_password'            : value => $keystone_password;
+    'DEFAULT/os_auth_host'                 : value => $keystone_host;
+    'DEFAULT/os_auth_port'                 : value => $keystone_port;
+    'DEFAULT/use_floating_ips'             : value => $use_floating_ips_value;
+    'DEFAULT/use_neutron'                  : value => $use_neutron_value;
+    'DEFAULT/node_domain'                  : value => $node_domain;
+    'DEFAULT/plugins'                      : value => $plugins;
+    'database/connection'                  : value => $sql_connection;
+    'database/max_retries'                 : value => '-1';
+    'DEFAULT/verbose'                      : value => $verbose;
+    'DEFAULT/debug'                        : value => $debug;
+  }
 }
