@@ -14,7 +14,7 @@
 #    under the License.
 
 class savanna::service ($enable = true,) {
-  service { 'savanna-api':
+  service { 'savanna':
     ensure     => running,
     enable     => $enable,
     hasrestart => true,
