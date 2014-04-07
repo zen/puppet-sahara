@@ -21,7 +21,7 @@ class savanna::install {
 
 
   package { 'python-savannaclient':
-    ensure   => '0.3',
+    ensure   => '0.3-1ppa2',
   }
 
   if $savanna::params::development {
