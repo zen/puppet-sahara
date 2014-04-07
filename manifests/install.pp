@@ -106,28 +106,4 @@ class savanna::install {
     group   => 'savanna',
     mode    => '0640',
   }
-
-  if $::osfamily == 'Debian' {
-    file { '/etc/init.d/savanna-api':
-      ensure  => file,
-      path    => '/etc/init.d/savanna-api',
-      content => template('savanna/savanna-api.erb'),
-      mode    => '0750',
-      owner   => 'root',
-      group   => 'root',
-    } ->
-    file { '/etc/savanna/savanna-api.conf':
-      ensure  => file,
-      path    => '/etc/init/savanna-api.conf',
-      content => template('savanna/savanna-api.conf.erb'),
-      mode    => '0750',
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['savanna-api'],
-    }
-  } else {
-    error('Savanna cannot be installed on this operating system.
-          It does not have the supported initscripts. There is only
-          support for Debian-based systems.')
-  }
 }
