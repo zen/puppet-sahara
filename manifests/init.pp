@@ -81,6 +81,7 @@ class savanna (
   $savanna_port           = '8386',
   $savanna_verbose        = false,
   $savanna_debug          = false,
+  $plugins                = 'vanilla',
   # db
   $db_host                = '127.0.0.1',
   $savanna_db_name        = 'savanna',
