@@ -167,13 +167,17 @@ use_syslog=<%= scope.lookupvar("savanna::params::savanna_syslog") %>
 # TODO(dizz): parameterise the following!
 # List of plugins to be loaded. Savanna preserves the order of
 # the list when returning it. (list value) - vanilla, hdp
-plugins=<%= @plugins %>
+plugins=<%= @plugins.join(', ') %>
 
+<% if @plugins.include?('vanilla') %>
 [plugin:vanilla]
 plugin_class=savanna.plugins.vanilla.plugin:VanillaProvider
+<% end -%>
 
-#[plugin:hdp]
-#plugin_class=savanna.plugins.hdp.plugin:AmbariPlugin
+<% if @plugins.include?('hdp') %>
+[plugin:hdp]
+plugin_class=savanna.plugins.hdp.plugin:AmbariPlugin
+<% end -%>
 
 #
 # Options defined in savanna.service.networks
