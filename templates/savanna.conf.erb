@@ -169,15 +169,6 @@ use_syslog=<%= scope.lookupvar("savanna::params::savanna_syslog") %>
 # the list when returning it. (list value) - vanilla, hdp
 plugins=<%= @plugins.join(',') %>
 
-<% if @plugins.include?('vanilla') %>
-[plugin:vanilla]
-plugin_class=savanna.plugins.vanilla.plugin:VanillaProvider
-<% end -%>
-
-<% if @plugins.include?('hdp') %>
-[plugin:hdp]
-plugin_class=savanna.plugins.hdp.ambariplugin:AmbariPlugin
-<% end -%>
 
 #
 # Options defined in savanna.service.networks
@@ -195,6 +186,19 @@ use_floating_ips=<%= scope.lookupvar("savanna::params::savanna_usefips") %>
 # dhcp_domain config parameter (string value)
 node_domain=<%= scope.lookupvar("savanna::params::savanna_node_domain") %>
 
+# Set to true when you have Neutron configured
+use_neutron=<%= scope.lookupvar("savanna::params::savanna_use_neutron") %>
+
+
+<% if @plugins.include?('vanilla') %>
+[plugin:vanilla]
+plugin_class=savanna.plugins.vanilla.plugin:VanillaProvider
+<% end -%>
+
+<% if @plugins.include?('hdp') %>
+[plugin:hdp]
+plugin_class=savanna.plugins.hdp.ambariplugin:AmbariPlugin
+<% end -%>
 
 [database]
 

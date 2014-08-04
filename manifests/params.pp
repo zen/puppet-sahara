@@ -21,7 +21,8 @@ class savanna::params {
   $savanna_lockdir = '/var/lock/savanna'
   $savanna_conf_file = '/etc/savanna/savanna.conf'
   $savanna_syslog = false
-  $savanna_usefips = false
+  $savanna_usefips = true
+  $savanna_use_neutron = true
   $savanna_node_domain = 'novalocal'
   # installs source version from github builds
   $development = false

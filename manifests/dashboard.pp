@@ -79,4 +79,12 @@ class savanna::dashboard (
     unless  => "grep \"SAVANNA_URL\" ${savanna::params::horizon_local_settings}",
     require => Package['python-savanna-dashboard'],
   }
+
+  exec { 'auto-assignment-enabled':
+    command => "echo \"AUTO_ASSIGNMENT_ENABLED = False\" >> ${savanna::params::horizon_local_settings}",
+    path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
+    unless  => "grep \"AUTO_ASSIGNMENT_ENABLED = False\" ${savanna::params::horizon_local_settings}",
+    require => Package['python-savanna-dashboard'],
+  }
+
 }
